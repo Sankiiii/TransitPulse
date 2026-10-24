@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartPublic Transport — Mumbai Public Transport & Live Route System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/leaflet.css">
+  <link rel="stylesheet" href="css/transitpulse.css">
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ==============================================================================
+       SIDEBAR NAVIGATION
+       ============================================================================== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+          <line x1="4" y1="22" x2="4" y2="15"></line>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>SmartPublic Transport</h1>
+        <p>Mumbai Live Transit</p>
+      </div>
+    </div>
+
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <button class="active" data-screen="planner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+          </svg>
+          Route Planner
+        </button>
+      </li>
+      <li class="nav-item">
+        <button data-screen="steps">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          Journey Steps
+        </button>
+      </li>
+      <li class="nav-item">
+        <button data-screen="connect">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+          </svg>
+          PulseAI
+        </button>
+      </li>
+      <li class="nav-item">
+        <button data-screen="report">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Passenger Report
+        </button>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div id="dataSourceBadge" class="data-source-badge">
+        <span class="pulse-dot"></span> Local Storage Mode
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==============================================================================
+       MAIN APPLICATION WRAPPER
+       ============================================================================== -->
+  <main class="main-wrapper">
+
+    <!-- Top Header Bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <div class="network-pill">
+          Network Flow: <strong>● 98.4% Normal</strong>
+        </div>
+        <span class="city-badge">Mumbai Transit (BEST Bus & Metro)</span>
+      </div>
+
+      <div class="top-bar-right">
+        <!-- Dark / Light (White) Theme Toggle Button -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Light/Dark Theme">
+          <span>🌙</span> Dark Theme
+        </button>
+
+        <!-- Live Clock Display -->
+        <div id="liveClock" class="clock-display">--:--:-- IST</div>
+      </div>
+    </header>
+
+    <!-- Emergency Marquee Alert Banner -->
+    <div id="emergencyAlertBanner" class="alert-banner hidden">
+      <span class="alert-tag">TRANSIT ALERT</span>
+      <span id="emergencyAlertText">Corridor Congestion Alert</span>
+    </div>
+
+    <!-- ============================================================================
+         SCREEN 1: ROUTE PLANNER & SEARCH (CLEAN & MINIMALIST)
+         ============================================================================ -->
+    <section id="screen-planner" class="screen-content active">
+      <div class="planner-grid">
+        
+        <!-- Left Column: Search & Route Cards -->
+        <div class="planner-panel">
+          <div class="commute-card">
+            <h2 class="card-title">Plan Your Commute</h2>
+            <p class="card-subtext">Find the fastest, direct transit options across Mumbai</p>
+            
+            <div class="commute-inputs">
+              <!-- Dynamic Origin & Destination with Vertical Stacking, Google Maps Style Connector & Clear Buttons -->
+              <div class="route-inputs-stacked">
+                <!-- Origin Input -->
+                <!-- Origin Dropdown -->
+                <div class="route-input-item">
+                  <div class="route-item-header">
+                    <span class="route-dot origin">🟢</span>
+                    <label for="plannerOriginSelect">From (Origin Hub)</label>
+                  </div>
+                  <select id="plannerOriginSelect" class="input-field route-select">
+                    <option value="SNDT University Juhu" selected>SNDT University Juhu</option>
+                    <option value="Andheri Railway Station">Andheri Railway Station</option>
+                    <option value="Airport International (CSMIA T2)">Airport International (CSMIA T2)</option>
+                    <option value="Ghatkopar Metro Station">Ghatkopar Metro Station</option>
+                    <option value="Vivekanand College (VESIT)">Vivekanand College (VESIT)</option>
+                    <option value="Dadar Central Interchange">Dadar Central Interchange</option>
+                    <option value="Bandra Kurla Complex (BKC)">Bandra Kurla Complex (BKC)</option>
+                    <option value="BARC (Trombay Hub)">BARC (Trombay Hub)</option>
+                    <option value="Siddhivinayak Mandir (Prabhadevi)">Siddhivinayak Mandir (Prabhadevi)</option>
+                    <option value="Mahalaxmi">Mahalaxmi</option>
+                    <option value="Marine Lines">Marine Lines</option>
+                    <option value="CSMT Railway Station">CSMT Railway Station</option>
+                    <option value="Kurla Junction">Kurla Junction</option>
+                    <option value="Vashi Railway Station">Vashi Railway Station</option>
+                    <option value="Juinagar Railway Station">Juinagar Railway Station</option>
+                    <option value="Borivali Railway Station">Borivali Railway Station</option>
+                    <option value="Thane Station">Thane Station</option>
+                    <option value="Churchgate Station">Churchgate Station</option>
+                  </select>
+                </div>
+
+                <!-- Swap Divider with Line and Button -->
+                <div class="route-swap-divider">
+                  <div class="route-divider-line"></div>
+                  <button type="button" id="swapRouteBtn" class="route-swap-btn" title="Swap Origin & Destination (⇄)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="17 1 21 5 17 9"></polyline>
+                      <path d="M3 5h18"></path>
+                      <polyline points="7 23 3 19 7 15"></polyline>
+                      <path d="M21 19H3"></path>
+                    </svg>
+                  </button>
+                  <div class="route-divider-line"></div>
+                </div>
+
+                <!-- Destination Dropdown -->
+                <div class="route-input-item">
+                  <div class="route-item-header">
+                    <span class="route-dot dest">🏁</span>
+                    <label for="plannerDestSelect">To (Destination Hub)</label>
+                  </div>
+                  <select id="plannerDestSelect" class="input-field route-select">
+                    <option value="SNDT University Juhu">SNDT University Juhu</option>
+                    <option value="Andheri Railway Station">Andheri Railway Station</option>
+                    <option value="Airport International (CSMIA T2)" selected>Airport International (CSMIA T2)</option>
+                    <option value="Ghatkopar Metro Station">Ghatkopar Metro Station</option>
+                    <option value="Vivekanand College (VESIT)">Vivekanand College (VESIT)</option>
+                    <option value="Dadar Central Interchange">Dadar Central Interchange</option>
+                    <option value="Bandra Kurla Complex (BKC)">Bandra Kurla Complex (BKC)</option>
+                    <option value="BARC (Trombay Hub)">BARC (Trombay Hub)</option>
+                    <option value="Siddhivinayak Mandir (Prabhadevi)">Siddhivinayak Mandir (Prabhadevi)</option>
+                    <option value="Mahalaxmi">Mahalaxmi</option>
+                    <option value="Marine Lines">Marine Lines</option>
+                    <option value="CSMT Railway Station">CSMT Railway Station</option>
+                    <option value="Kurla Junction">Kurla Junction</option>
+                    <option value="Vashi Railway Station">Vashi Railway Station</option>
+                    <option value="Juinagar Railway Station">Juinagar Railway Station</option>
+                    <option value="Borivali Railway Station">Borivali Railway Station</option>
+                    <option value="Thane Station">Thane Station</option>
+                    <option value="Churchgate Station">Churchgate Station</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Real-Time Collision & Validation Alert Banner -->
+              <div id="routeValidationAlert" class="route-validation-alert hidden"></div>
+
+              <!-- Transport Mode Dropdown (BUS, LOCAL TRAIN, METRO, ALL) -->
+              <div class="input-group">
+                <label>Transport Mode</label>
+                <select id="plannerModeSelect" class="input-field">
+                  <option value="ALL" selected>⚡ All Transit Modes (Best Combo)</option>
+                  <option value="BUS">🚌 BUS (BEST AC Express & Feeder)</option>
+                  <option value="METRO">🚇 METRO (Line 1 & Aqua Link)</option>
+                  <option value="LOCAL">🚆 LOCAL TRAIN (Western & Central Fast)</option>
+                </select>
+              </div>
+              
+              <!-- Clean Filter Pills (Exact 4 Options) -->
+              <div class="filter-pills-row">
+                <div class="filter-pills">
+                  <span class="filter-pill active" data-pref="">All Options</span>
+                  <span class="filter-pill" data-pref="fastest">⚡ Fastest</span>
+                  <span class="filter-pill" data-pref="least_crowded">Least Crowded</span>
+                  <span class="filter-pill" data-pref="pocket_friendly">💰 Pocket Friendly</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Route Alternative Cards (Chalo & Google Maps Inspired) -->
+          <div id="routesListContainer" class="routes-list">
+            <!-- Populated dynamically via app.js -->
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Real-World Google Maps Cartography -->
+        <div class="map-panel">
+          <!-- Top Floating Header Bar (Google Maps Style) -->
+          <div class="map-header">
+            <span style="font-size:1.1rem;">📍</span>
+            <div>
+              <strong id="mapHeaderTitle" style="font-size:0.85rem;color:var(--text-main);">Transit Stations Map</strong>
+              <div id="mapHeaderSubtitle" style="font-size:0.75rem;color:var(--text-muted);">SNDT Juhu (A) ➔ Airport T2 (B)</div>
+            </div>
+          </div>
+
+          <!-- Top-Right Floating Controls (Layer Switcher & Navigation) -->
+          <div class="map-top-controls">
+            <div class="map-layer-pill-group">
+              <button id="mapLayerStreet" class="map-ctrl-btn active" title="Google Maps Street View">
+                <span>🗺️</span> Street
+              </button>
+              <button id="mapLayerSat" class="map-ctrl-btn" title="Satellite Hybrid View">
+                <span>🛰️</span> Satellite
+              </button>
+            </div>
+            <button id="mapFitRouteBtn" class="map-ctrl-btn map-fit-btn" title="Fit Stations (A & B)">
+              <span>🎯</span> Fit (A & B)
+            </button>
+          </div>
+
+          <!-- Interactive Leaflet Map Container -->
+          <div id="mumbaiTransitMap" style="flex:1; width:100%; height:100%; min-height:480px;"></div>
+
+          <!-- Bottom Floating Dynamic Legend (Google Maps Style) -->
+          <div id="mapDynamicLegend" class="map-legend">
+            <div class="legend-item">
+              <span style="font-size:0.85rem;">🟢</span>
+              <span id="mapLegendOrigin">Origin (A)</span>
+            </div>
+            <div class="legend-item">
+              <span style="font-size:0.85rem;">🏁</span>
+              <span id="mapLegendDest">Destination (B)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================================
+         SCREEN: IN-DETAIL JOURNEY STEPS (UNCONGESTED SEPARATE TAB)
+         ============================================================================ -->
+    <section id="screen-steps" class="screen-content">
+      <div class="steps-tab-container">
+        
+        <!-- Header Card: Active Trip Overview & Switchers -->
+        <div class="card steps-tab-header">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;">
+            <div>
+              <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.35rem;">
+                <span class="badge badge-emerald">Verified Transit Route</span>
+                <span id="stepsActiveRouteBadge" class="badge badge-blue">Harbour Line via Wadala</span>
+              </div>
+              <h2 id="stepsActiveTripTitle" style="font-size:1.35rem;font-weight:800;color:var(--text-main);margin:0;">
+                SNDT University Juhu ➔ Vivekanand College (VESIT)
+              </h2>
+              <p id="stepsActiveTripSubtitle" style="font-size:0.85rem;color:var(--text-muted);margin:0.35rem 0 0 0;">
+                Central Railway • 52 mins • ₹15 Fare • 1 Transfer at Wadala Road
+              </p>
+            </div>
+            <div style="display:flex;gap:0.5rem;align-items:center;">
+              <button id="backToPlannerBtn" class="btn btn-outline" style="padding:0.45rem 1rem;font-size:0.82rem;">
+                ← Back to Route Planner
+              </button>
+            </div>
+          </div>
+
+          <!-- Route Alternative Selector Pills (switch between multiple routes) -->
+          <div style="margin-top:1.15rem;padding-top:0.85rem;border-top:1px solid var(--border-subtle);">
+            <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.5rem;">
+              Select Alternative Route to Inspect Steps:
+            </div>
+            <div id="stepsRouteSelectorRow" class="steps-route-switcher">
+              <!-- Injected dynamically via app.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Step-by-Step Directions Card -->
+        <div class="card steps-timeline-wrapper" style="margin-top:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;border-bottom:1px solid var(--border-subtle);padding-bottom:0.75rem;">
+            <div>
+              <h3 style="font-size:1.1rem;font-weight:800;color:var(--text-main);margin:0;">
+                🧭 In-Detail Step-by-Step Directions
+              </h3>
+              <p style="font-size:0.78rem;color:var(--text-muted);margin:0.15rem 0 0 0;">
+                Exact boarding stops, transfer platforms, vehicle routes & commuter instructions
+              </p>
+            </div>
+            <span id="stepsCountBadge" class="badge badge-gray">4 Steps</span>
+          </div>
+
+          <!-- Dynamic Steps List -->
+          <div id="detailedStepsListContainer" class="detailed-steps-timeline">
+            <!-- Injected via app.js -->
+          </div>
+
+          <!-- Trip Conclusion & Commuter Summary Box -->
+          <div id="stepsConclusionContainer" class="steps-conclusion-card" style="margin-top:1.5rem;">
+            <!-- Injected dynamically via app.js -->
+          </div>
+
+          <!-- Commuter Pro-Tip Box -->
+          <div id="stepsProTipContainer" class="route-protip-box" style="margin-top:1.25rem;">
+            <!-- Injected via app.js -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================================
+         SCREEN 2: PASSENGER REPORT (QUICK 3-TAP CROWDSOURCING)
+         ============================================================================ -->
+    <section id="screen-report" class="screen-content">
+      <div class="report-grid">
+        
+        <!-- Left: Quick Report Form -->
+        <div class="card">
+          <h2 class="card-title">Report Live Transit Conditions</h2>
+          <p class="card-subtext">Crowdsource real-time traffic or crowding to alert other passengers</p>
+
+          <div style="display:flex;flex-direction:column;gap:1.25rem;margin-top:1.25rem;">
+            
+            <div class="input-group">
+              <label>Select Route</label>
+              <select id="reportRouteSelect" class="input-field">
+                <option value="Line C-101 AC Express" selected>Line C-101 AC Express (SNDT Juhu ➔ Airport T2)</option>
+                <option value="Metro Line 1 + Aqua 3">Metro Line 1 (Ghatkopar ➔ Andheri)</option>
+                <option value="Harbour Fast Express">Harbour Fast Express (Vashi ➔ CSMT)</option>
+                <option value="Route 355 AC Feeder">Route 355 Feeder (Vivekanand College ➔ BARC)</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label>Current Station / Location</label>
+              <select id="reportStopSelect" class="input-field">
+                <option value="SNDT University Juhu" selected>SNDT University Juhu</option>
+                <option value="Andheri Railway Station">Andheri Railway Station</option>
+                <option value="Airport International (CSMIA T2)">Airport International (CSMIA T2)</option>
+                <option value="Ghatkopar Metro Station">Ghatkopar Metro Station</option>
+                <option value="Vivekanand College (VESIT)">Vivekanand College (VESIT)</option>
+                <option value="BARC (Trombay Hub)">BARC (Trombay Hub)</option>
+                <option value="Siddhivinayak Mandir (Prabhadevi)">Siddhivinayak Mandir (Prabhadevi)</option>
+                <option value="Mahalaxmi">Mahalaxmi</option>
+                <option value="Marine Lines">Marine Lines</option>
+                <option value="CSMT Railway Station">CSMT Railway Station</option>
+                <option value="Vashi Railway Station">Vashi Railway Station</option>
+                <option value="Juinagar Railway Station">Juinagar Railway Station</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size:0.75rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;">
+                1-Tap Crowd Level
+              </label>
+              <div class="crowd-selector-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="crowd-btn active" data-crowd="Low">🟢 Seats Open</div>
+                <div class="crowd-btn" data-crowd="Moderate">🟡 Standing Room</div>
+                <div class="crowd-btn" data-crowd="High">🔴 Crowded</div>
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size:0.75rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;">
+                Delay Experienced
+              </label>
+              <div class="stepper-container">
+                <button class="step-btn active" data-delay="0">On Time</button>
+                <button class="step-btn" data-delay="5">+5 mins</button>
+                <button class="step-btn" data-delay="10">+10 mins</button>
+                <button class="step-btn" data-delay="15">+15 mins</button>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>Short Note (Optional)</label>
+              <input id="reportCommentInput" class="input-field" type="text" placeholder="e.g. Bus arrived on time, comfortable AC seating...">
+            </div>
+
+            <button id="submitReportBtn" class="btn btn-primary" style="padding:0.75rem;font-size:0.95rem;">
+              Submit Live Update
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Right: Recent Community Updates -->
+        <div>
+          <h2 class="card-title" style="margin-bottom:0.75rem;">Recent Community Updates</h2>
+          <div id="communityFeedContainer" class="community-feed">
+            <!-- Feed cards injected via app.js -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================================
+         SCREEN: PULSEAI LIVE CONNECT & TELEMETRY RADAR
+         ============================================================================ -->
+    <section id="screen-connect" class="screen-content">
+      <div class="connect-container">
+        
+        <!-- Header Bar -->
+        <div class="connect-header-bar card">
+          <div class="connect-header-left">
+            <div class="connect-title-row">
+              <div class="connect-icon-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="22" height="22">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+                </svg>
+              </div>
+              <div>
+                <h2 style="font-size:1.25rem;font-weight:800;color:var(--text-main);margin:0;">PulseAI</h2>
+                <p style="font-size:0.78rem;color:var(--text-muted);margin:0.15rem 0 0 0;">
+                  Context-Aware Mumbai Transit Assistant • Powered by Gemini 3.8 Flash
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Commute Selection Context Bar (Reflects User's Selection from Tab 1) -->
+        <div id="copilotContextBanner" class="card copilot-context-banner">
+          <div class="context-item">
+            <span class="context-pill-label">📍 Trip Selected</span>
+            <strong id="copilotActiveTripText" class="context-pill-value">Dadar Central Interchange ➔ Airport International (CSMIA T2)</strong>
+          </div>
+          <div class="context-divider"></div>
+          <div class="context-item">
+            <span class="context-pill-label">🚆 Active Route Plan</span>
+            <div style="display:flex;align-items:center;gap:0.45rem;">
+              <strong id="copilotActivePlanText" class="context-pill-value" style="color:var(--emerald-main);">Line C-101 AC Express (26m • ₹20)</strong>
+              <span id="copilotActivePlanBadge" class="badge badge-emerald">Selected Plan</span>
+            </div>
+          </div>
+          <div class="context-actions">
+            <button id="copilotViewStepsBtn" class="btn btn-outline" style="padding:0.35rem 0.75rem;font-size:0.75rem;">
+              🧭 View Steps (Tab 2) →
+            </button>
+            <button id="copilotChangeRouteBtn" class="btn btn-outline" style="padding:0.35rem 0.75rem;font-size:0.75rem;">
+              🔄 Change in Tab 1
+            </button>
+          </div>
+        </div>
+
+        <!-- Clean Full-Width PulseAI Chat Card -->
+        <div class="card copilot-chat-card pulseai-full-chat">
+          
+          <!-- Copilot Header -->
+          <div class="copilot-header">
+            <div style="display:flex;align-items:center;gap:0.65rem;">
+              <div class="ai-avatar-ring">
+                <span class="ai-sparkle">✨</span>
+              </div>
+              <div>
+                <div style="display:flex;align-items:center;gap:0.4rem;">
+                  <h3 style="font-size:1.05rem;font-weight:800;color:var(--text-main);margin:0;">PulseAI</h3>
+                  <span class="ai-model-tag">gemini-3.8-flash</span>
+                </div>
+                <p style="font-size:0.75rem;color:var(--text-muted);margin:0.15rem 0 0 0;">
+                  Context-Aware Transit Intelligence • English, हिंदी, मराठी
+                </p>
+              </div>
+            </div>
+            <button id="clearCopilotChatBtn" class="btn btn-outline" style="padding:0.35rem 0.65rem;font-size:0.75rem;" title="Restart Chat Session">
+              🔄 Reset Chat
+            </button>
+          </div>
+
+          <!-- Chat Scroll Stream -->
+          <div id="connectChatHistory" class="copilot-chat-history">
+            <!-- Initial Welcoming Message -->
+            <div class="chat-message-row ai-row">
+              <div class="chat-avatar">🤖</div>
+              <div class="chat-bubble ai-bubble">
+                <div class="bubble-header">
+                  <strong>PulseAI</strong>
+                  <span class="bubble-time">Live</span>
+                </div>
+                <div class="bubble-body">
+                  <p>Namaskar! 🙏 I am your live Mumbai commute assistant powered by <strong>Gemini 3.8 Flash</strong>.</p>
+                  <p>I am tracking your selected commute. Feel free to ask me about transfer viability, platform numbers, traffic chokepoints, or cost-saving combos!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Prompt Suggestion Chips -->
+          <div class="quick-chips-wrapper">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text-muted);margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.04em;">
+              Quick Commuter Queries:
+            </div>
+            <div class="quick-chips-row">
+              <button class="quick-chip-btn" data-query="Will I catch my connecting transit on time?">
+                ⚡ Will I reach on time?
+              </button>
+              <button class="quick-chip-btn" data-query="Any traffic chokepoints or waterlogging on this route?">
+                🌧️ Check route chokepoints
+              </button>
+              <button class="quick-chip-btn" data-query="What is the cheapest fare option using Chalo Card or NCMC?">
+                💰 Best fare & Chalo Card tip
+              </button>
+              <button class="quick-chip-btn" data-query="मुंबई ट्रॅव्हल अपडेट मराठीत सांगा (Give commute advice in Marathi)">
+                🗣️ मराठीत सांगा (Marathi)
+              </button>
+            </div>
+          </div>
+
+          <!-- Chat Input Row -->
+          <form id="connectChatForm" class="copilot-input-form">
+            <input id="connectChatInput" type="text" class="input-field copilot-input" 
+                   placeholder="Ask Gemini: 'What platform at Dadar?', 'Any delays on WEH?'..." autocomplete="off">
+            <button id="connectChatSubmitBtn" type="submit" class="btn btn-primary copilot-send-btn">
+              <span>Send</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<!-- ==============================================================================
+     MODAL: EXPORT DATASET & CODE
+     ============================================================================== -->
+<div id="codeExportModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>📋 Code Snippets & Database Export</h3>
+      <button id="closeModalBtn" class="modal-close-btn">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="code-tabs">
+        <button class="code-tab-btn active" data-tab="sql">MySQL Workbench SQL</button>
+        <button class="code-tab-btn" data-tab="api">REST API Snippets</button>
+        <button class="code-tab-btn" data-tab="json">JSON Raw Export</button>
+      </div>
+
+      <pre id="codeDisplayBlock" class="code-display-block"></pre>
+    </div>
+
+    <div class="modal-footer">
+      <button id="copyCurrentCodeBtn" class="btn btn-primary">
+        Copy Code to Clipboard
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Toast Container -->
+<div id="appToast" class="toast-notice"></div>
+
+<!-- Scripts -->
+<script src="js/leaflet.js"></script>
+<script src="js/api.js"></script>
+<script src="js/map.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

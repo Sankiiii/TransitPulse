@@ -1,0 +1,192 @@
+[
+  {
+    "stopId": 1,
+    "stopName": "SNDT University Juhu",
+    "city": "Mumbai",
+    "latitude": 19.0988,
+    "longitude": 72.8267,
+    "stopType": "CAMPUS_TERMINAL",
+    "landmark": "Juhu Tara Road / Santacruz West",
+    "zone": "Western Suburbs"
+  },
+  {
+    "stopId": 2,
+    "stopName": "Andheri Railway Station",
+    "city": "Mumbai",
+    "latitude": 19.1197,
+    "longitude": 72.8464,
+    "stopType": "METRO_RAIL_HUB",
+    "landmark": "Platform 1 & Metro Line 1 Interchange",
+    "zone": "Western Corridor"
+  },
+  {
+    "stopId": 3,
+    "stopName": "Airport International (CSMIA T2)",
+    "city": "Mumbai",
+    "latitude": 19.0974,
+    "longitude": 72.8745,
+    "stopType": "INTERNATIONAL_TERMINUS",
+    "landmark": "Departures Level • Sahar Elevated Access",
+    "zone": "Airport Zone"
+  },
+  {
+    "stopId": 4,
+    "stopName": "Ghatkopar Metro Station",
+    "city": "Mumbai",
+    "latitude": 19.0864,
+    "longitude": 72.9081,
+    "stopType": "METRO_STATION",
+    "landmark": "Metro Line 1 / Central Railway Concourse",
+    "zone": "Eastern Suburbs"
+  },
+  {
+    "stopId": 5,
+    "stopName": "Vivekanand College (VESIT)",
+    "city": "Mumbai",
+    "latitude": 19.0463,
+    "longitude": 72.8889,
+    "stopType": "CAMPUS_STOP",
+    "landmark": "Sindhi Society / Collector Colony, Chembur",
+    "zone": "Chembur East"
+  },
+  {
+    "stopId": 6,
+    "stopName": "BARC (Trombay Hub)",
+    "city": "Mumbai",
+    "latitude": 19.0182,
+    "longitude": 72.9234,
+    "stopType": "RESEARCH_TERMINAL",
+    "landmark": "Bhabha Atomic Research Centre Gate 1",
+    "zone": "Trombay Corridor"
+  },
+  {
+    "stopId": 7,
+    "stopName": "Siddhivinayak Mandir (Prabhadevi)",
+    "city": "Mumbai",
+    "latitude": 19.0169,
+    "longitude": 72.8303,
+    "stopType": "TRANSIT_JUNCTION",
+    "landmark": "SK Bole Marg / Prabhadevi Junction",
+    "zone": "South-Central"
+  },
+  {
+    "stopId": 8,
+    "stopName": "Mahalaxmi",
+    "city": "Mumbai",
+    "latitude": 18.9827,
+    "longitude": 72.8239,
+    "stopType": "RAILWAY_STATION",
+    "landmark": "Mahalaxmi Temple / Racecourse Concourse",
+    "zone": "South Mumbai"
+  },
+  {
+    "stopId": 9,
+    "stopName": "Marine Lines",
+    "city": "Mumbai",
+    "latitude": 18.9442,
+    "longitude": 72.8242,
+    "stopType": "COASTAL_STATION",
+    "landmark": "Queens Necklace / Marine Drive Walkway",
+    "zone": "South Mumbai"
+  },
+  {
+    "stopId": 10,
+    "stopName": "CSMT Railway Station",
+    "city": "Mumbai",
+    "latitude": 18.9401,
+    "longitude": 72.8354,
+    "stopType": "HERITAGE_TERMINUS",
+    "landmark": "Chhatrapati Shivaji Maharaj Terminus",
+    "zone": "South Mumbai"
+  },
+  {
+    "stopId": 11,
+    "stopName": "Vashi Railway Station",
+    "city": "Navi Mumbai",
+    "latitude": 19.0644,
+    "longitude": 72.9984,
+    "stopType": "INTERCITY_TERMINUS",
+    "landmark": "Sector 30A / Vashi Plaza Hub",
+    "zone": "Navi Mumbai Hub"
+  },
+  {
+    "stopId": 12,
+    "stopName": "Juinagar Railway Station",
+    "city": "Navi Mumbai",
+    "latitude": 19.0494,
+    "longitude": 73.0186,
+    "stopType": "SUBURBAN_STATION",
+    "landmark": "Sion-Panvel Highway Connector",
+    "zone": "Navi Mumbai Corridor"
+  },
+  {
+    "stopId": 13,
+    "stopName": "Dadar Central Interchange",
+    "city": "Mumbai",
+    "latitude": 19.0178,
+    "longitude": 72.8436,
+    "stopType": "MAJOR_INTERCHANGE",
+    "landmark": "Western & Central Railway Concourse",
+    "zone": "Central Mumbai"
+  },
+  {
+    "stopId": 14,
+    "stopName": "Bandra Kurla Complex (BKC)",
+    "city": "Mumbai",
+    "latitude": 19.0650,
+    "longitude": 72.8650,
+    "stopType": "BUSINESS_DISTRICT_HUB",
+    "landmark": "BKC City Park / Metro Line 3 Station",
+    "zone": "BKC Business Hub"
+  },
+  {
+    "stopId": 15,
+    "stopName": "Kurla Junction",
+    "city": "Mumbai",
+    "latitude": 19.0657,
+    "longitude": 72.8794,
+    "stopType": "RAILWAY_JUNCTION",
+    "landmark": "Central & Harbour Railway Interchange",
+    "zone": "Central Suburbs"
+  },
+  {
+    "stopId": 16,
+    "stopName": "Borivali Railway Station",
+    "city": "Mumbai",
+    "latitude": 19.2290,
+    "longitude": 72.8573,
+    "stopType": "NORTHERN_TERMINUS",
+    "landmark": "Western Railway Fast Platform 1-10",
+    "zone": "Western Suburbs North"
+  },
+  {
+    "stopId": 17,
+    "stopName": "Thane Station",
+    "city": "Thane",
+    "latitude": 19.1860,
+    "longitude": 72.9754,
+    "stopType": "METROPOLITAN_HUB",
+    "landmark": "Central Railway & Trans-Harbour Junction",
+    "zone": "Thane MMR"
+  },
+  {
+    "stopId": 18,
+    "stopName": "Churchgate Station",
+    "city": "Mumbai",
+    "latitude": 18.9322,
+    "longitude": 72.8264,
+    "stopType": "SOUTHERN_TERMINUS",
+    "landmark": "Western Railway Headquarters Terminus",
+    "zone": "South Mumbai"
+  },
+  {
+    "stopId": 19,
+    "stopName": "Bandra Station",
+    "city": "Mumbai",
+    "latitude": 19.0544,
+    "longitude": 72.8406,
+    "stopType": "TRANSIT_HUB",
+    "landmark": "Bandra West Heritage Station & Terminus",
+    "zone": "Western Corridor"
+  }
+]

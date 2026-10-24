@@ -1,0 +1,21 @@
+# Compiled binaries & build artifacts
+bin/
+target/
+*.class
+
+# Archive packages
+*.zip
+*.tar.gz
+
+# System and editor files
+.DS_Store
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Temporary build scripts/logs
+sources.txt
+*.log

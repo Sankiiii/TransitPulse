@@ -1,0 +1,105 @@
+{
+  "kpis": {
+    "totalMonthlyPassengers": "1,428,950",
+    "passengerGrowthDelta": "+6.4%",
+    "averageNetworkDelayMin": "4.8",
+    "delayVarianceDelta": "-1.2m",
+    "networkOnTimeRatePct": "88.5%",
+    "onTimeTargetPct": "90.0%",
+    "busiestCorridorName": "Line C-101 - Express Corridor",
+    "busiestCorridorTrips": "284,102",
+    "busiestCorridorOccupancy": "78%"
+  },
+  "diurnalHeatmap": [
+    {"hour": "00", "loadK": 12, "delayMin": 1.1, "tier": "LOW"},
+    {"hour": "01", "loadK": 8, "delayMin": 0.8, "tier": "LOW"},
+    {"hour": "02", "loadK": 5, "delayMin": 0.5, "tier": "LOW"},
+    {"hour": "03", "loadK": 6, "delayMin": 0.7, "tier": "LOW"},
+    {"hour": "04", "loadK": 14, "delayMin": 1.2, "tier": "LOW"},
+    {"hour": "05", "loadK": 32, "delayMin": 2.1, "tier": "MODERATE"},
+    {"hour": "06", "loadK": 58, "delayMin": 3.8, "tier": "MODERATE"},
+    {"hour": "07", "loadK": 88, "delayMin": 5.4, "tier": "MODERATE"},
+    {"hour": "08", "loadK": 145, "delayMin": 8.9, "tier": "RUSH_CRITICAL"},
+    {"hour": "09", "loadK": 162, "delayMin": 9.4, "tier": "RUSH_CRITICAL"},
+    {"hour": "10", "loadK": 118, "delayMin": 7.1, "tier": "RUSH_CRITICAL"},
+    {"hour": "11", "loadK": 65, "delayMin": 3.2, "tier": "MODERATE"},
+    {"hour": "12", "loadK": 54, "delayMin": 2.2, "tier": "LOW"},
+    {"hour": "13", "loadK": 48, "delayMin": 1.8, "tier": "LOW"},
+    {"hour": "14", "loadK": 52, "delayMin": 2.0, "tier": "LOW"},
+    {"hour": "15", "loadK": 68, "delayMin": 3.4, "tier": "MODERATE"},
+    {"hour": "16", "loadK": 92, "delayMin": 5.8, "tier": "MODERATE"},
+    {"hour": "17", "loadK": 155, "delayMin": 8.6, "tier": "RUSH_CRITICAL"},
+    {"hour": "18", "loadK": 172, "delayMin": 9.8, "tier": "RUSH_CRITICAL"},
+    {"hour": "19", "loadK": 138, "delayMin": 7.9, "tier": "RUSH_CRITICAL"},
+    {"hour": "20", "loadK": 82, "delayMin": 4.5, "tier": "MODERATE"},
+    {"hour": "21", "loadK": 55, "delayMin": 2.8, "tier": "MODERATE"},
+    {"hour": "22", "loadK": 35, "delayMin": 1.9, "tier": "LOW"},
+    {"hour": "23", "loadK": 20, "delayMin": 1.4, "tier": "LOW"}
+  ],
+  "bottlenecks": [
+    {
+      "rank": "#1",
+      "route": "Line C-101 Express (Dadar ↔ Airport T2)",
+      "avgDelay": "7.4 mins",
+      "reliabilityIndex": "76.2%",
+      "reliabilityLabel": "Low",
+      "primaryCause": "BKC Chokepoints",
+      "reportsCount": 1240,
+      "status": "Critical Action",
+      "statusClass": "red"
+    },
+    {
+      "rank": "#2",
+      "route": "Metro Aqua Line 3 (BKC ↔ Andheri Central)",
+      "avgDelay": "6.1 mins",
+      "reliabilityIndex": "81.0%",
+      "reliabilityLabel": "Fair",
+      "primaryCause": "Platform Density",
+      "reportsCount": 894,
+      "status": "Moderate Attn",
+      "statusClass": "blue"
+    },
+    {
+      "rank": "#3",
+      "route": "Line 402 City Feeder (Kurla ↔ Santacruz)",
+      "avgDelay": "5.8 mins",
+      "reliabilityIndex": "84.5%",
+      "reliabilityLabel": "Acceptable",
+      "primaryCause": "Signal Timing Delay",
+      "reportsCount": 512,
+      "status": "Stable",
+      "statusClass": "gray"
+    },
+    {
+      "rank": "#4",
+      "route": "Line 88 Shuttle (Kalanagar ↔ Tech Hub)",
+      "avgDelay": "4.2 mins",
+      "reliabilityIndex": "89.1%",
+      "reliabilityLabel": "High",
+      "primaryCause": "Inclement Monsoon",
+      "reportsCount": 198,
+      "status": "Healthy",
+      "statusClass": "green"
+    }
+  ],
+  "interventions": {
+    "intervention1": {
+      "title": "CORRIDOR 101 OPTIMIZATION",
+      "confidence": "94% Confidence",
+      "recommendation": "Deploy 2 standby electric buses on Line 101 between 08:30 and 10:00 to reduce corridor delay by 31%.",
+      "savings": "Saves 4,120 Pax-Hours/day • Cost Delta: +₹8,400"
+    },
+    "intervention2": {
+      "title": "SIGNAL TIMING SYNC (M3 HUB)",
+      "confidence": "88% Confidence",
+      "recommendation": "Extending green signal priority along BKC Connector by 14 seconds dissolves peak dwell queue backlogs.",
+      "savings": "Improves on-time junction flow by 18%"
+    },
+    "intervention3": {
+      "title": "DYNAMIC OFF-PEAK FARE INCENTIVE",
+      "confidence": "79% Confidence",
+      "recommendation": "Early bird tariff reduction (-15% pre-08:00) estimated to shift 4,600 commuters out of the 08:30 super-peak.",
+      "savings": "Smooths peak crowding from 94% down to 81%"
+    }
+  }
+}

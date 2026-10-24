@@ -1,0 +1,62 @@
+[
+  {
+    "incidentId": 1,
+    "vehicleId": 4092,
+    "routeNumber": "Bus Line C-101 - Express",
+    "severity": "CRITICAL",
+    "status": "UNVERIFIED",
+    "reportedAgo": "1m ago",
+    "passengerConsensus": "94% (3 Passenger Reports within 4 mins)",
+    "headline": "Heavy Traffic Delay (+12m) at BKC Flyover & 5th Avenue",
+    "crowdDensity": "High Density / Standing Only",
+    "congestionSpikeSpeed": "4.2 km/h (Slow)",
+    "assignedDriver": "Marcus Vance",
+    "location": "BKC City Park Approach",
+    "verified": false
+  },
+  {
+    "incidentId": 2,
+    "vehicleId": 108,
+    "routeNumber": "Metro Aqua Line 3 (Consist #T-108)",
+    "severity": "HARDWARE_AUTO",
+    "status": "UNVERIFIED",
+    "reportedAgo": "4m ago",
+    "passengerConsensus": "Automated Telemetry Sensor Code 44-D",
+    "headline": "Door Sensor Malfunction (+6m delay at BKC Station)",
+    "crowdDensity": "Normal Flow Platform 2",
+    "congestionSpikeSpeed": "Holding at Platform 2",
+    "assignedDriver": "Auto CBTC (Attendant Priya Rao)",
+    "location": "BKC Underground Concourse",
+    "verified": false
+  },
+  {
+    "incidentId": 3,
+    "vehicleId": 2214,
+    "routeNumber": "Line 40 Feeder Shuttle (Vehicle #2214)",
+    "severity": "OPERATOR_DISPATCH",
+    "status": "UNVERIFIED",
+    "reportedAgo": "8m ago",
+    "passengerConsensus": "Driver Direct Voice/CAD Channel 02",
+    "headline": "Emergency Road Work Detour (+15m) near Vakola Bridge",
+    "crowdDensity": "Water main maintenance blocking Grand Blvd",
+    "congestionSpikeSpeed": "Immediate corridor bypass active",
+    "assignedDriver": "Suresh Sawant (Verified Driver)",
+    "location": "WEH Vakola Junction",
+    "verified": false
+  },
+  {
+    "incidentId": 4,
+    "vehicleId": 402,
+    "routeNumber": "Bus Line 402 - City Feeder",
+    "severity": "WARNING",
+    "status": "UNVERIFIED",
+    "reportedAgo": "12m ago",
+    "passengerConsensus": "6 Passenger Upvotes",
+    "headline": "VIP Convoy Movement (+8m delay at Kalanagar)",
+    "crowdDensity": "Moderate Occupancy",
+    "congestionSpikeSpeed": "Traffic halted temporarily by traffic police",
+    "assignedDriver": "Rohan Kulkarni",
+    "location": "Kalanagar Junction",
+    "verified": false
+  }
+]
